@@ -1,3 +1,0 @@
-I was writing a one-off story and kept losing track of lore details across dozens of markdown files. So I built a small RAG pipeline that lets me ask questions about my own documents. Basically, it searches for relevant chunks of text, then feeds them to an AI model so it can answer based on what I actually wrote instead of guessing.
-
-It uses ChromaDB for vector storage, LangChain for document processing, OpenRouter for the language model (Aurora Alpha, < 10 billion parameters), and all-MiniLM-L6-v2 for the document embeddings. Took about two weeks, most of which was spent learning how RAG works rather than coding. The accuracy is limited since I am using a lightweight model on a laptop that's not exactly suited for AI tasks, but as a learning exercise it did the job.
