@@ -25,7 +25,7 @@ def interactive_mode(model_name=DEFAULT_MODEL):
                 
             print("\nThinking...", end="", flush=True)
             
-            # Print newline before streaming
+
             print("\rAnswer:   \n")
             
             sources = []
@@ -52,7 +52,7 @@ def single_query(query, model_name=DEFAULT_MODEL):
         if docs:
             sources = docs
         print(chunk, end="", flush=True)
-    print() # Newline at end
+    print()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RAG Command Line Interface")
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
-    # Resolve model alias
+
     model = FAST_MODELS.get(args.model, args.model)
 
     if args.interactive:

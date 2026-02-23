@@ -2,8 +2,8 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from src.rag import query_rag
-from src.ingest import ingest
-from typing import List, Optional
+from src.ingest import ingest, DEFAULT_DATA_PATH
+from typing import List
 
 app = FastAPI(title="RAG API", description="API for RAG System")
 
@@ -22,7 +22,12 @@ class QueryResponse(BaseModel):
 @app.post("/query", response_model=QueryResponse)
 async def query_endpoint(request: QueryRequest):
     try:
-        response_text, sources = query_rag(request.query)
+        full_response = ""
+        sources = []
+        for chunk, docs in query_rag(request.query):
+            full_response += chunk
+            if docs:
+                sources = docs
         
         formatted_sources = []
         for doc, score in sources:
@@ -32,14 +37,14 @@ async def query_endpoint(request: QueryRequest):
                 score=score
             ))
             
-        return QueryResponse(answer=response_text, sources=formatted_sources)
+        return QueryResponse(answer=full_response, sources=formatted_sources)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/ingest")
 async def ingest_endpoint():
     try:
-        ingest()
+        ingest(DEFAULT_DATA_PATH)
         return {"status": "success", "message": "Ingestion complete"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

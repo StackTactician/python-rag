@@ -3,12 +3,10 @@ import logging
 import warnings
 from dotenv import load_dotenv
 
-# Suppress warnings and logs
 logging.getLogger("transformers").setLevel(logging.ERROR)
 logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
 warnings.filterwarnings("ignore")
 
-# Load environment variables
 load_dotenv()
 
 CHROMA_PATH = "chroma_db"
@@ -21,19 +19,17 @@ def get_embedding_function():
         _embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     return _embedding_model
 
-def query_rag(query_text: str, model_name: str = "deepseek/deepseek-r1:free", stream: bool = False):
+def query_rag(query_text: str, model_name: str = "openrouter/aurora-alpha", stream: bool = False):
     from langchain_community.vectorstores import Chroma
     embeddings = get_embedding_function()
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embeddings)
 
-    # Search
     results = db.similarity_search_with_score(query_text, k=5)
 
     if not results:
         yield "I couldn't find any relevant context to answer your question.", []
         return
 
-    # Context and Prompt
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
     
     messages = [
@@ -41,7 +37,6 @@ def query_rag(query_text: str, model_name: str = "deepseek/deepseek-r1:free", st
         {"role": "user", "content": f"Context:\n{context_text}\n\nQuestion: {query_text}"}
     ]
 
-    # OpenRouter API Call using requests
     import requests
     import json
 

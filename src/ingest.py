@@ -1,22 +1,15 @@
 import os
-import glob
-from typing import List
 import argparse
 import logging
 import warnings
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
-# Suppress warnings
 logging.getLogger("transformers").setLevel(logging.ERROR)
 logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
 warnings.filterwarnings("ignore")
 
-import argparse
-
-# Configuration
 DEFAULT_DATA_PATH = "data"
 CHROMA_PATH = "chroma_db"
 
@@ -52,18 +45,9 @@ def save_to_chroma(chunks):
     from langchain_community.vectorstores import Chroma
     from tqdm import tqdm
     
-    # Check if DB exists
-    if os.path.exists(CHROMA_PATH):
-        # Optional: shutil.rmtree(CHROMA_PATH)
-        pass
-
-    # Initialize Embeddings
     embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-
-    # Initialize Vector Store
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embeddings)
 
-    # Batch Process
     BATCH_SIZE = 50
     total_chunks = len(chunks)
     

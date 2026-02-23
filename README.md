@@ -1,38 +1,32 @@
 # RAG with OpenRouter
 
-This is a Retrieval-Augmented Generation (RAG) application that allows you to query Markdown documents using an OpenRouter LLM.
+A small RAG pipeline for querying markdown documents using an LLM via OpenRouter.
 
 ## Setup
 
-1.  **Install Dependencies**:
-    ```bash
-    python -m venv venv
-    venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
-    *(Note: dependencies are already installed if you followed the agent's steps)*
+1. Create a virtual environment and install dependencies:
+   ```bash
+   python -m venv venv
+   venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-2.  **Environment Variables**:
-    Ensure `.env` contains your `OPENROUTER_API_KEY`.
+2. Add your `OPENROUTER_API_KEY` to a `.env` file in the project root.
 
-## Running the App
+## Ingesting Documents
 
+Place your `.md` files in the `data/` folder, then run:
+```bash
+python src/ingest.py
+```
 
+You can also pass a different directory:
+```bash
+python src/ingest.py path/to/your/docs
+```
 
-2.  **Upload Data**:
-    - Use the sidebar to upload `.md` files.
-    - Click "Ingest Uploaded Files".
-    - Or manually place files in `data/` and click "Ingest Existing Data Folder".
+## CLI
 
-3.  **Chat**:
-    - Ask questions in the chat interface.
-
-## customization
-
-- **Model**: Change the `model` parameter in `src/rag.py` to use a different OpenRouter model.
-## CLI Usage
-
-Run the command-line interface:
 ```bash
 # Interactive mode
 python src/cli.py
@@ -41,15 +35,19 @@ python src/cli.py
 python src/cli.py "What is RAG?"
 ```
 
-## API Usage
+## API
 
-Start the API server:
+Start the server:
 ```bash
 python src/api.py
 ```
 
 Endpoints:
-- `POST /query`: `{"query": "your question"}`
-- `POST /ingest`: Trigger ingestion.
+- `POST /query` with `{"query": "your question"}`
+- `POST /ingest` to trigger ingestion
 
-Swagger UI available at `http://localhost:8000/docs`.
+Swagger docs at `http://localhost:8000/docs`.
+
+## Customisation
+
+To use a different model, change the default in `src/rag.py`.
