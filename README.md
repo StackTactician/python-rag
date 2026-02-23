@@ -7,7 +7,7 @@ A small RAG pipeline for querying markdown documents using an LLM via OpenRouter
 1. Create a virtual environment and install dependencies:
    ```bash
    python -m venv venv
-   venv\Scripts\activate
+   source venv/bin/activate  # Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
@@ -23,6 +23,11 @@ python src/ingest.py
 You can also pass a different directory:
 ```bash
 python src/ingest.py path/to/your/docs
+```
+
+To rebuild the vector store from scratch:
+```bash
+python src/ingest.py data --clear
 ```
 
 ## CLI
@@ -43,11 +48,11 @@ python src/api.py
 ```
 
 Endpoints:
-- `POST /query` with `{"query": "your question"}`
-- `POST /ingest` to trigger ingestion
+- `POST /query` with `{"query": "your question", "model": "openrouter/aurora-alpha"}`
+- `POST /ingest?clear_existing=true` to trigger ingestion and optionally clear existing vectors
 
 Swagger docs at `http://localhost:8000/docs`.
 
 ## Customisation
 
-To use a different model, change the default in `src/rag.py`.
+To use a different model, pass `-m` in the CLI or `model` in the API request body.
