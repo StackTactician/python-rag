@@ -1,3 +1,5 @@
+"""NanoRAG ingestion pipeline for markdown loading, chunking, and vector persistence."""
+
 import argparse
 import hashlib
 import logging

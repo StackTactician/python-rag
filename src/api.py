@@ -1,3 +1,5 @@
+"""NanoRAG FastAPI application exposing query and ingestion endpoints."""
+
 from typing import List
 
 from fastapi import FastAPI, HTTPException
@@ -6,7 +8,7 @@ from pydantic import BaseModel, Field
 from src.ingest import DEFAULT_DATA_PATH, ingest
 from src.rag import DEFAULT_MODEL, query_rag
 
-app = FastAPI(title="RAG API", description="API for RAG System")
+app = FastAPI(title="NanoRAG API", description="API for the NanoRAG system")
 
 
 class QueryRequest(BaseModel):

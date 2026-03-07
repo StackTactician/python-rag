@@ -1,3 +1,5 @@
+"""NanoRAG retrieval and generation helpers for OpenRouter-backed QA."""
+
 import json
 import logging
 import os
@@ -113,7 +115,7 @@ def query_rag(
                 "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
                 "HTTP-Referer": "http://localhost:8501",
-                "X-Title": "Local RAG App",
+                "X-Title": "NanoRAG",
             },
             json=payload,
             stream=stream,
